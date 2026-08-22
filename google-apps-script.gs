@@ -2,6 +2,7 @@ const SHEET_NAME = "Daily log";
 
 function doGet() {
   const sheet = getSheet();
+  removeConnectionTestRows(sheet);
   const values = sheet.getDataRange().getValues();
   if (values.length < 2) return json({ entries: [] });
 
@@ -15,7 +16,9 @@ function doGet() {
 function doPost(event) {
   const payload = JSON.parse(event.postData.contents);
   const entry = payload.entry;
+  if (entry.id === "connection-test-20260822") return json({ ok: true });
   const sheet = getSheet();
+  removeConnectionTestRows(sheet);
   ensureHeaders(sheet);
   sheet.appendRow([
     entry.id,
@@ -62,6 +65,14 @@ function ensureHeaders(sheet) {
     "confidence",
     "nextFocus",
   ]);
+}
+
+function removeConnectionTestRows(sheet) {
+  for (let row = sheet.getLastRow(); row >= 2; row--) {
+    if (sheet.getRange(row, 1).getValue() === "connection-test-20260822") {
+      sheet.deleteRow(row);
+    }
+  }
 }
 
 function json(data) {

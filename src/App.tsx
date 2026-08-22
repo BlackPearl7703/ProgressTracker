@@ -47,97 +47,52 @@ const students = [
   { name: "Krish", initials: "KR", color: "yellow", role: "CLAT focus" },
 ];
 
-const initialEntries: Entry[] = [
-  {
-    id: 1,
-    student: "Bhavisya",
-    date: "2026-08-21",
-    learned: "Constitutional Law: Fundamental Rights",
-    practiced: "Legal reasoning, Critical reasoning",
-    questions: 42,
-    remarks: "Good accuracy on principle-fact questions.",
-    cuetPaperYear: "",
-    cuetPaperScore: "",
-    clatPaperYear: "2023",
-    clatPaperScore: "78 / 120",
-    duration: 145,
-    confidence: "Strong",
-    nextFocus: "Torts: negligence",
-  },
-  {
-    id: 2,
-    student: "Himanshu",
-    date: "2026-08-21",
-    learned: "Probability and Statistics",
-    practiced: "Quantitative aptitude, General test",
-    questions: 56,
-    remarks: "Need to revisit conditional probability.",
-    cuetPaperYear: "2024",
-    cuetPaperScore: "164 / 250",
-    clatPaperYear: "",
-    clatPaperScore: "",
-    duration: 180,
-    confidence: "Steady",
-    nextFocus: "Data interpretation set",
-  },
-  {
-    id: 3,
-    student: "Krish",
-    date: "2026-08-20",
-    learned: "International organisations",
-    practiced: "Current affairs, English comprehension",
-    questions: 38,
-    remarks: "Vocabulary is improving week over week.",
-    cuetPaperYear: "",
-    cuetPaperScore: "",
-    clatPaperYear: "2022",
-    clatPaperScore: "71 / 120",
-    duration: 120,
-    confidence: "Steady",
-    nextFocus: "Editorial reading",
-  },
-];
-
 const today = new Date().toISOString().slice(0, 10);
 const DEFAULT_ONLINE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbxtbweyyXGpnrxkL9BG7IPaxjlwe1W8r_8BxPSP3hji915JgNPmjyfi63RGlqMwYG-paQ/exec";
 function App() {
   const [entries, setEntries] = useState<Entry[]>(() => {
     const saved = localStorage.getItem("prep-log-entries");
-    if (!saved) return initialEntries;
-    return JSON.parse(saved).map(
-      (
-        entry: Entry & {
-          exam?: "CUET" | "CLAT";
-          paperYear?: string;
-          paperScore?: string;
-          pyqYear?: string;
-          pyqScore?: string;
-        },
-      ) => ({
-        ...entry,
-        cuetPaperYear:
-          entry.cuetPaperYear ??
-          (entry.exam === "CUET"
-            ? (entry.paperYear ?? entry.pyqYear ?? "—")
-            : ""),
-        cuetPaperScore:
-          entry.cuetPaperScore ??
-          (entry.exam === "CUET"
-            ? (entry.paperScore ?? entry.pyqScore ?? "")
-            : ""),
-        clatPaperYear:
-          entry.clatPaperYear ??
-          (entry.exam === "CLAT"
-            ? (entry.paperYear ?? entry.pyqYear ?? "—")
-            : ""),
-        clatPaperScore:
-          entry.clatPaperScore ??
-          (entry.exam === "CLAT"
-            ? (entry.paperScore ?? entry.pyqScore ?? "")
-            : ""),
-      }),
-    );
+    if (!saved) return [];
+    return JSON.parse(saved)
+      .map(
+        (
+          entry: Entry & {
+            exam?: "CUET" | "CLAT";
+            paperYear?: string;
+            paperScore?: string;
+            pyqYear?: string;
+            pyqScore?: string;
+          },
+        ) => ({
+          ...entry,
+          cuetPaperYear:
+            entry.cuetPaperYear ??
+            (entry.exam === "CUET"
+              ? (entry.paperYear ?? entry.pyqYear ?? "—")
+              : ""),
+          cuetPaperScore:
+            entry.cuetPaperScore ??
+            (entry.exam === "CUET"
+              ? (entry.paperScore ?? entry.pyqScore ?? "")
+              : ""),
+          clatPaperYear:
+            entry.clatPaperYear ??
+            (entry.exam === "CLAT"
+              ? (entry.paperYear ?? entry.pyqYear ?? "—")
+              : ""),
+          clatPaperScore:
+            entry.clatPaperScore ??
+            (entry.exam === "CLAT"
+              ? (entry.paperScore ?? entry.pyqScore ?? "")
+              : ""),
+        }),
+      )
+      .filter(
+        (entry: Entry) =>
+          ![1, 2, 3, 4].includes(Number(entry.id)) &&
+          String(entry.id) !== "connection-test-20260822",
+      );
   });
   const [activeStudent, setActiveStudent] = useState("All students");
   const [isFormOpen, setIsFormOpen] = useState(false);
