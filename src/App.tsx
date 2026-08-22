@@ -464,7 +464,7 @@ function App() {
           <div>
             <p className="eyebrow">Saturday, 22 August 2026</p>
             <h1>
-              Good morning, <em>mentor.</em>
+              Good morning, <em>Garrano.</em>
             </h1>
             <p className="heading-copy">
               A clear view of the work that moves your students forward.
