@@ -48,8 +48,7 @@ const students = [
 ];
 
 const today = new Date().toISOString().slice(0, 10);
-const DEFAULT_ONLINE_SHEET_URL =
-  "https://script.google.com/macros/s/AKfycbxtbweyyXGpnrxkL9BG7IPaxjlwe1W8r_8BxPSP3hji915JgNPmjyfi63RGlqMwYG-paQ/exec";
+const DEFAULT_ONLINE_SHEET_URL = import.meta.env.VITE_ONLINE_SHEET_URL || "";
 function App() {
   const [entries, setEntries] = useState<Entry[]>(() => {
     const saved = localStorage.getItem("prep-log-entries");

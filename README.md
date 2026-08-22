@@ -38,3 +38,7 @@ npm run build
 New entries will append to the `Daily log` tab, and connecting on another device imports the existing rows. The app still keeps a local browser copy as a backup. This uses Google Apps Script as the lightweight cloud connector required for cross-device storage; without some cloud connector, browsers cannot share data between machines.
 
 To avoid entering the URL on each device, replace the empty `DEFAULT_ONLINE_SHEET_URL` value near the top of `src/App.tsx` with the `/exec` URL, then redeploy the React app. The app will connect automatically for everyone who opens the new deployment.
+
+## Configure GitHub
+
+The app reads the URL from `VITE_ONLINE_SHEET_URL`. For local development, copy `.env.example` to `.env.local` and add the Apps Script `/exec` URL. For GitHub Actions, add a repository **Variable** named `VITE_ONLINE_SHEET_URL`; the included build workflow passes it to Vite automatically. Do not use a secret API key here: frontend variables are included in the public browser bundle, and the Apps Script URL is an endpoint rather than a private credential.
